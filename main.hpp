@@ -20,11 +20,32 @@ void printoutcontents(string, string, int, string, int);
 int makeNameRecord(string state[], string gender[], int year[], string name[], int count[])
 {
     // TODO: open "babyname.txt", read each line into the parallel arrays,
+    ifstream inputfile;
+    inputfile.open("babyname.txt");
+    if(!inputfile){
+        cerr << "Unable to open file";
+        exit(1);
+    }
+    int cnt = 0;
+    while(inputfile >> state[cnt] >> gender[cnt] >> year[cnt] >> name[cnt] >> count[cnt]){
+        cout << state[cnt] << " " << gender[cnt] << " " << year[cnt] << " " << name[cnt] << " " << count[cnt] << endl;
+        cnt++;
+    }
+    inputfile.close();
+    return cnt;
 }
 
 int findNames(int cnt, string state[], string gender[], int year[], string name[], int count[], char starting, string stname)
 {
     // TODO: print each record where the state matches `stname` and the name
+    int matches = 0;
+    for(int i = 0; i < cnt; i++){
+        if(state[i] == stname && name[i].rfind(starting, 0) == 0){
+            printoutcontents(state[i], gender[i], year[i], name[i], count[i]);
+            matches += 1;
+        }
+    }
+    return matches;
 }
 
 void printoutallrecords(int cnt, string state[], string gender[], int year[], string name[], int count[])
